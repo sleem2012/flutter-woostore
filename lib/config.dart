@@ -4,5 +4,7 @@ class Config {
   static String secret = "cs_56423c4d802ec7b2792c9695d6ae32abaa5673c7";
   static String url = "https://dev-sleemstore.pantheonsite.io/wp-json/wc/v3/";
   static String customerURL = "customers";
+  static String tokenURL = "https://dev-sleemstore.pantheonsite.io/wp-json/jwt-auth/v1/token";
+
 }
 

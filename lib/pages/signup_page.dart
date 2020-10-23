@@ -3,8 +3,6 @@ import 'package:flutter_woocomerce/api_service.dart';
 import 'package:flutter_woocomerce/model/customer.dart';
 import 'package:flutter_woocomerce/utlils/form_helper.dart';
 import 'package:flutter_woocomerce/utlils/progressHUD.dart';
-import 'package:flutter_woocomerce/utlils/vaildator_services.dart';
-
 class SignupPage extends StatefulWidget {
   @override
   _SignupPageState createState() => _SignupPageState();
