@@ -1,79 +1,62 @@
-class LoginResponseModel {
+import 'dart:convert';
+
+class LoginResponse {
   bool success;
   int statusCode;
   String code;
   String message;
   Data data;
-
-  LoginResponseModel({
+  LoginResponse({
     this.success,
     this.statusCode,
     this.code,
     this.message,
     this.data,
   });
-
-  LoginResponseModel.fromJson(Map<String, dynamic> json) {
+  LoginResponse.fromJson(Map<String, dynamic> json) {
+    print(json['data'].runtimeType);
     success = json['success'];
     statusCode = json['statusCode'];
     code = json['code'];
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['success'] = this.success;
-    data['statusCode'] = this.statusCode;
-    data['code'] = this.code;
-    data['message'] = this.message;
-
-    if (this.data != null) {
-      data['data'] = this.data.toJson() ;
-    }
-    return data;
-  }
 }
 
 class Data {
-  String token;
-  int id;
+  String id;
   String email;
-  String niceName;
   String firstName;
   String lastName;
+  String nicename;
+  String token;
   String displayName;
 
   Data({
-    this.token,
     this.id,
     this.email,
-    this.niceName,
     this.firstName,
     this.lastName,
     this.displayName,
+    this.nicename,
+    this.token,
   });
-
   Data.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
-    id = json['id'];
+    id = json['id'].toString();
     email = json['email'];
-    niceName = json['niceName'];
     firstName = json['firstName'];
-    lastName = json['lastName'];
     displayName = json['displayName'];
+    nicename = json['nicename'];
+    token = json['token'];
   }
-
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['token'] = this.token;
-    data['id'] = this.id;
-    data['email'] = this.email;
-    data['niceName'] = this.niceName;
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
-    data['displayName'] = this.displayName;
-
-    return data;
+    Map<String, dynamic> map = Map<String, dynamic>();
+    map['id'] = id;
+    map['email'] = email;
+    map['firstName'] = firstName;
+    map['displayName'] = displayName;
+    map['nicename'] = nicename;
+    map['token'] = token;
+    return map;
   }
 }

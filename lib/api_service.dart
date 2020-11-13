@@ -1,35 +1,31 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:flutter_woocomerce/config.dart';
-import 'package:flutter_woocomerce/model/customer.dart';
+import 'package:flutter_woocomerce/model/category.dart';
 import 'package:flutter_woocomerce/model/login_model.dart';
+import 'package:flutter_woocomerce/model/product.dart';
+import './config.dart';
+import 'model/customer.dart';
 
 class APIServices {
-  Future<bool> createCustomer(CustomerModel) async {
-    var authToken =
-    base64.encode(utf8.encode(Config.key + ':' + Config.secret));
-    bool ret = false;
-
+  Future<bool> createCustomer(CustomerModel model) async {
+    var authToken = base64.encode(
+      utf8.encode(Config.key + ':' + Config.secret),
+    );
+    var ret = false;
     try {
-      var response = await Dio().post(
-          Config.url + Config.customerURL,
-          data: CustomerModel.toJson(),
-          options: Options(
-              headers: {
-                HttpHeaders.authorizationHeader: 'Basic $authToken',
-                HttpHeaders.contentTypeHeader: 'application/json',
-
-              }
-          )
-
-      );
+      var response = await Dio().post(Config.url + Config.customerURL,
+          data: model.toJson(),
+          options: Options(headers: {
+            HttpHeaders.authorizationHeader: 'Basic $authToken',
+            HttpHeaders.contentTypeHeader: 'application/json'
+          }));
       if (response.statusCode == 201) {
         ret = true;
       }
-    } on DioError catch (e) {
-      if (e.response.statusCode == 404) {
+    } on DioError catch (error) {
+      print(error.message);
+      if (error.response.statusCode == 404) {
         ret = false;
       } else {
         ret = false;
@@ -38,35 +34,92 @@ class APIServices {
     return ret;
   }
 
-
-  Future<LoginResponseModel> loginCustomer(String username,
-      String password) async {
-    LoginResponseModel model;
+  Future<LoginResponse> loginCustomer(String username, String password) async {
+    LoginResponse model;
+    var authorization =
+        'Basic ' + base64Encode(utf8.encode('$username:$password'));
+    var authToken = base64.encode(
+      utf8.encode(Config.key + ':' + Config.secret),
+    );
 
     try {
       var response = await Dio().post(
-          Config.tokenURL,
-          data: {
-            "username": username,
-            "password": password,
-          },
-          options: Options(
-              headers: {
-                HttpHeaders
-                    .contentTypeHeader: 'application/x-www-form-urlencoded',
-
-              }
-          )
-
+        Config.tokenURL,
+        data: {
+          'username': username,
+          'password': password,
+        },
+        options: Options(headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $authToken',
+          HttpHeaders.contentTypeHeader: 'application/x-www-from-urlencoded'
+        }, responseType: ResponseType.json),
       );
+      print('rea');
+      print('response ${response.data}');
       if (response.statusCode == 200) {
-        model = LoginResponseModel.fromJson(response.data);
+        model = LoginResponse.fromJson(response.data);
       }
     } on DioError catch (e) {
-      print(e.message);
+      print('error:${e.message}');
+      throw e;
     }
     return model;
   }
 
+  Future<List<Category>> getCategories() async {
+    List<Category> data = List<Category>();
+
+    try {
+      String url = Config.url +
+          Config.categoriesURL +
+          "?consumer_key=${Config.key}&consumer_secret=${Config.secret}";
+      var response = await Dio().get(
+        url,
+        options: Options(
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        data = (response.data as List)
+            .map(
+              (i) => Category.fromJson(i),
+            )
+            .toList();
+      }
+    } on DioError catch (e) {
+      print(e.response);
+    }
+    return data;
+  }
+
+  Future<List<Product>> getProducts(String tagId) async {
+    List<Product> data = List<Product>();
+
+    try {
+      String url = Config.url +
+          Config.productsURL +
+          "?consumer_key=${Config.key}&consumer_secret=${Config.secret}&tag=$tagId";
+      var response = await Dio().get(
+        url,
+        options: Options(
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        data = (response.data as List)
+            .map(
+              (i) => Product.fromJson(i),
+        )
+            .toList();
+      }
+    } on DioError catch (e) {
+      print(e.response);
+    }
+    return data;
+  }
 
 }
