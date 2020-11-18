@@ -31,7 +31,8 @@ class Product {
     sku = json['sku'];
     price = json['price'];
     regularPrice = json['regular_price'];
-    salePrice = json['sale_price'];
+    salePrice = json['sale_price']!=""?json['sale_price']:json['regular_price'];
+
     stockStatus = json['stock_status'];
 
     if (json['categories'] != null) {
@@ -46,6 +47,15 @@ class Product {
         images.add(Images.fromJson(v));
       });
     }
+  }
+
+  calculateDiscount() {
+    double regularPrice = double.parse(this.regularPrice);
+    double salePrice =
+        this.salePrice != "" ? double.parse(this.salePrice) : regularPrice;
+    double discount = regularPrice - salePrice;
+    double disPercent = (discount / regularPrice) * 100;
+    return disPercent.round();
   }
 }
 

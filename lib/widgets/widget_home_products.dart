@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_woocomerce/model/product.dart';
+import 'package:flutter_woocomerce/pages/product_page.dart';
 
 import '../api_service.dart';
 
@@ -58,7 +59,7 @@ class _WidgetHomeProductsState extends State<WidgetHomeProducts> {
 
   Widget _productsList() {
     return FutureBuilder(
-      future: apiServices.getProducts(this.widget.tagId),
+      future: apiServices.getProducts(tagName: this.widget.tagId),
       builder: (
         BuildContext context,
         AsyncSnapshot<List<Product>> model,
@@ -130,9 +131,7 @@ class _WidgetHomeProductsState extends State<WidgetHomeProducts> {
                   children: [
                     Text(
                       '\$${data.regularPrice}',
-
                       style: TextStyle(
-
                         fontSize: 14,
                         decoration: TextDecoration.lineThrough,
                         decorationThickness: 1.5,

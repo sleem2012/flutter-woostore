@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_woocomerce/model/category.dart';
 import 'package:flutter_woocomerce/model/login_model.dart';
 import 'package:flutter_woocomerce/model/product.dart';
@@ -94,13 +95,44 @@ class APIServices {
     return data;
   }
 
-  Future<List<Product>> getProducts(String tagId) async {
+  Future<List<Product>> getProducts({
+    int pageNumber,
+    int pageSize,
+    String strSearch,
+    String tagName,
+    String categoryId,
+    String sortBy,
+    String sortOrder = "asc",
+  }) async {
     List<Product> data = List<Product>();
 
     try {
+      String parameter = "";
+
+      if (strSearch != null) {
+        parameter += "&search=$strSearch";
+      }
+      if (pageSize != null) {
+        parameter += "&per_page=$pageSize";
+      }
+      if (pageNumber != null) {
+        parameter += "&page=$pageNumber";
+      }
+      if (tagName != null) {
+        parameter += "&tag=$tagName";
+      }
+      if (categoryId != null) {
+        parameter += "&category=$categoryId";
+      }
+      if (sortBy != null) {
+        parameter += "&orderby=$sortBy";
+      }
+      if (sortOrder != null) {
+        parameter += "&order=$sortOrder";
+      }
       String url = Config.url +
           Config.productsURL +
-          "?consumer_key=${Config.key}&consumer_secret=${Config.secret}&tag=$tagId";
+          "?consumer_key=${Config.key}&consumer_secret=${Config.secret}&${parameter.toString()}";
       var response = await Dio().get(
         url,
         options: Options(
@@ -113,7 +145,7 @@ class APIServices {
         data = (response.data as List)
             .map(
               (i) => Product.fromJson(i),
-        )
+            )
             .toList();
       }
     } on DioError catch (e) {
@@ -121,5 +153,4 @@ class APIServices {
     }
     return data;
   }
-
 }

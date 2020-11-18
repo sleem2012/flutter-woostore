@@ -10,6 +10,7 @@ class BasePage extends StatefulWidget {
 
 class BasePageState<T extends BasePage> extends State<T> {
   bool isApiCallProcess = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,42 +22,43 @@ class BasePageState<T extends BasePage> extends State<T> {
       ),
     );
   }
-  Widget PageUI(){
+
+  Widget PageUI() {
     return null;
   }
 
-Widget _buildAppBar() {
-  return AppBar(
-    centerTitle: true,
-    brightness: Brightness.dark,
-    elevation: 0,
-    backgroundColor: Colors.redAccent,
-    automaticallyImplyLeading: false,
-    title: Text(
-      'Sleem Store',
-      style: TextStyle(color: Colors.white),
-    ),
-    actions: [
-      Icon(
-        Icons.notifications_none,
-        color: Colors.white,
-      ),
-      SizedBox(
-        width: 10,
-      ),
-      Icon(
-        Icons.shopping_cart,
-        color: Colors.white,
-      ),
-      SizedBox(
-        width: 10,
-      ),
-    ],
-  );
-}
   @override
   void dispose() {
     super.dispose();
   }
-}
 
+  Widget _buildAppBar() {
+    return AppBar(
+      centerTitle: true,
+      brightness: Brightness.dark,
+      elevation: 0,
+      backgroundColor: Colors.redAccent,
+      automaticallyImplyLeading: true,
+      title: Text(
+        'Sleem Store',
+        style: TextStyle(color: Colors.white),
+      ),
+      actions: [
+        Icon(
+          Icons.notifications_none,
+          color: Colors.white,
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Icon(
+          Icons.shopping_cart,
+          color: Colors.white,
+        ),
+        SizedBox(
+          width: 10,
+        ),
+      ],
+    );
+  }
+}

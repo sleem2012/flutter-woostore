@@ -82,8 +82,13 @@ class _WidgetCategoriesState extends State<WidgetCategories> {
           var data = categories[index];
           return GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProductPage(categoryId: data.categoryId,)));
+              return Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ProductPage(categoryId: data.categoryId),
+                ),
+              );
             },
             child: Column(
               children: [

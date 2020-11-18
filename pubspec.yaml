@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  provider: ^4.3.2+2
   carousel_pro: ^1.0.0
   dio: 3.0.10
   flutter:
