@@ -1,20 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_woocomerce/api_service.dart';
 import 'package:flutter_woocomerce/model/product.dart';
 import 'package:flutter_woocomerce/pages/product_details.dart';
 
-import '../api_service.dart';
-
-class WidgetHomeProducts extends StatefulWidget {
-  WidgetHomeProducts({Key key, this.labelName, this.tagId}) : super(key: key);
+class WidgetRelatedProducts extends StatefulWidget {
   String labelName;
-  String tagId;
+  List<int> products;
+
+  WidgetRelatedProducts({this.labelName, this.products});
 
   @override
-  _WidgetHomeProductsState createState() => _WidgetHomeProductsState();
+  _WidgetRelatedProductsState createState() => _WidgetRelatedProductsState();
 }
 
-class _WidgetHomeProductsState extends State<WidgetHomeProducts> {
+class _WidgetRelatedProductsState extends State<WidgetRelatedProducts> {
   APIServices apiServices;
 
   @override
@@ -26,7 +25,7 @@ class _WidgetHomeProductsState extends State<WidgetHomeProducts> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xffF4F7FA),
+      color: Colors.white10,
       child: Column(
         children: [
           Row(
@@ -61,7 +60,7 @@ class _WidgetHomeProductsState extends State<WidgetHomeProducts> {
 
   Widget _productsList() {
     return FutureBuilder(
-      future: apiServices.getProducts(tagName: this.widget.tagId),
+      future: apiServices.getProducts(productIDs: this.widget.products),
       builder: (BuildContext context,
           AsyncSnapshot<List<Product>> model,) {
         if (model.hasData) {
@@ -163,3 +162,4 @@ class _WidgetHomeProductsState extends State<WidgetHomeProducts> {
     );
   }
 }
+

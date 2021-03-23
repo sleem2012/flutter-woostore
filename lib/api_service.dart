@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_woocomerce/model/category.dart';
 import 'package:flutter_woocomerce/model/login_model.dart';
 import 'package:flutter_woocomerce/model/product.dart';
@@ -101,6 +100,7 @@ class APIServices {
     String strSearch,
     String tagName,
     String categoryId,
+    List<int>productIDs,
     String sortBy,
     String sortOrder = "asc",
   }) async {
@@ -120,6 +120,9 @@ class APIServices {
       }
       if (tagName != null) {
         parameter += "&tag=$tagName";
+      }
+      if (productIDs != null) {
+        parameter += "&include=${productIDs.join(",").toString()}";
       }
       if (categoryId != null) {
         parameter += "&category=$categoryId";
