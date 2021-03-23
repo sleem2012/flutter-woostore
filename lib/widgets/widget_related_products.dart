@@ -25,7 +25,7 @@ class _WidgetRelatedProductsState extends State<WidgetRelatedProducts> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white10,
+      color: Colors.white12,
       child: Column(
         children: [
           Row(
